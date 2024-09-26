@@ -4,6 +4,8 @@ import { NumericFormat } from 'react-number-format';
 import { formatDate } from '../utils/formatDate';
 import Spinner from './Spinner';
 
+const baseUrl = import.meta.env.VITE_API_BASE_URL
+
 const headCells = [
   { id: 'callId', label: 'Call ID' },
   { id: 'email', label: 'User Email' },
@@ -42,7 +44,7 @@ const fetchCallData = async (type) => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     const response = await axios.get(
-      `/api/voice-agent/users-calls?type=${type}`,
+      `${baseUrl}/voice-agent/users-calls?type=${type}`,
       {
         headers: {
           'Content-Type': 'application/json',
