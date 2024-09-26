@@ -12,8 +12,6 @@ import NotFoundPage from './pages/NotFoundPage';
 const baseUrl = import.meta.env.VITE_API_BASE_URL
 
 const App = () => {
-  // const accessToken = localStorage.getItem('accessToken');
-
   // Login User
   const loginUser = async user => {
     const res = await fetch(`${baseUrl}/auth/login`, {
