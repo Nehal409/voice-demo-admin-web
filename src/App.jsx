@@ -9,13 +9,14 @@ import NoNavbarLayout from './layouts/NoNavbarLayout';
 import DashboardPage from './pages/DashboardPage';
 import LoginPage from './pages/LoginPage';
 import NotFoundPage from './pages/NotFoundPage';
+const baseUrl = import.meta.env.VITE_API_BASE_URL
 
 const App = () => {
   // const accessToken = localStorage.getItem('accessToken');
 
   // Login User
   const loginUser = async user => {
-    const res = await fetch(`/api/auth/login`, {
+    const res = await fetch(`${baseUrl}/auth/login`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
