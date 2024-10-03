@@ -19,12 +19,18 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('restaurant')}
             label="Restaurant Calls"
           />
+          <TabButton
+            isActive={activeTab === 'house of zen'}
+            onClick={() => setActiveTab('house of zen')}
+            label="House of Zen Calls"
+          />
         </nav>
       </div>
 
       <div className="mt-6">
         {activeTab === 'hospital' && <CallsList type="hospital" />}
         {activeTab === 'restaurant' && <CallsList type="restaurant" />}
+        {activeTab === 'house of zen' && <CallsList type="house of zen" />}
       </div>
     </div>
   );
@@ -34,7 +40,9 @@ function TabButton({ isActive, onClick, label }) {
   return (
     <button
       className={`text-lg px-4 py-2 focus:outline-none ${
-        isActive ? 'border-b-2 border-indigo-500 text-indigo-500' : 'text-gray-500 hover:text-indigo-500'
+        isActive
+          ? 'border-b-2 border-indigo-500 text-indigo-500'
+          : 'text-gray-500 hover:text-indigo-500'
       }`}
       onClick={onClick}
     >
