@@ -4,9 +4,10 @@ import { NumericFormat } from 'react-number-format';
 import { formatDate } from '../utils/formatDate';
 import Spinner from './Spinner';
 
-const baseUrl = import.meta.env.VITE_API_BASE_URL
+const baseUrl = import.meta.env.VITE_API_BASE_URL;
 
 const headCells = [
+  { id: 'delete_call', label: 'Delete Record' },
   { id: 'callId', label: 'Call ID' },
   { id: 'email', label: 'User Email' },
   { id: 'phone', label: 'User Phone' },
@@ -37,10 +38,14 @@ const OrderStatus = ({ status }) => {
     busy: 'Busy',
   };
 
-  return <span className={statusClasses[status] || 'text-gray-500'}>{statusLabels[status] || 'Unknown'}</span>;
+  return (
+    <span className={statusClasses[status] || 'text-gray-500'}>
+      {statusLabels[status] || 'Unknown'}
+    </span>
+  );
 };
 
-const fetchCallData = async (type) => {
+const fetchCallData = async type => {
   try {
     const accessToken = localStorage.getItem('accessToken');
     const response = await axios.get(
@@ -60,7 +65,24 @@ const fetchCallData = async (type) => {
     } else {
       // Handle other types of errors (optional)
       console.error('An error occurred:', error);
-      throw error;  // Re-throw the error if needed
+      throw error; // Re-throw the error if needed
+    }
+  }
+};
+
+const deleteCallRecord = async (callId, setRows, rows) => {
+  if (window.confirm('Are you sure you want to delete this call record?')) {
+    try {
+      const accessToken = localStorage.getItem('accessToken');
+      await axios.delete(`${baseUrl}/voice-agent/calls/${callId}`, {
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+      // Filter out the deleted record from the state
+      setRows(rows.filter(row => row.callId !== callId));
+    } catch (error) {
+      console.error('Failed to delete the call record:', error);
     }
   }
 };
@@ -90,7 +112,7 @@ export default function CallsList({ type }) {
         <table className="min-w-full bg-white">
           <thead>
             <tr>
-              {headCells.map((cell) => (
+              {headCells.map(cell => (
                 <th
                   key={cell.id}
                   className="px-6 py-3 border-b-2 border-gray-300 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider"
@@ -101,8 +123,20 @@ export default function CallsList({ type }) {
             </tr>
           </thead>
           <tbody>
-            {rows.map((row) => (
-              <tr key={row.callId} className="bg-white border-b border-gray-200 hover:bg-gray-50">
+            {rows.map(row => (
+              <tr
+                key={row.callId}
+                className="bg-white border-b border-gray-200 hover:bg-gray-50"
+              >
+                <td className="px-6 py-4">
+                  {/* Delete button */}
+                  <button
+                    onClick={() => deleteCallRecord(row.callId, setRows, rows)}
+                    className="text-red-600 hover:text-red-800"
+                  >
+                    Delete
+                  </button>
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <a href="#" className="text-indigo-600 hover:underline">
                     {row.callId}
@@ -113,13 +147,24 @@ export default function CallsList({ type }) {
                 <td className="px-6 py-4">
                   <OrderStatus status={row.callStatus} />
                 </td>
-                <td className="px-6 py-4 text-right">{row.callLength || '-'}</td>
                 <td className="px-6 py-4 text-right">
-                  <NumericFormat value={row.callPrice || '-'} displayType="text" thousandSeparator prefix="$" />
+                  {row.callLength || '-'}
+                </td>
+                <td className="px-6 py-4 text-right">
+                  <NumericFormat
+                    value={row.callPrice || '-'}
+                    displayType="text"
+                    thousandSeparator
+                    prefix="$"
+                  />
                 </td>
                 <td className="px-6 py-4">{row.callAnalysis}</td>
-                <td className="px-6 py-4">{row.startedAt ? formatDate(row.startedAt) : '-'}</td>
-                <td className="px-6 py-4">{row.endedAt ? formatDate(row.endedAt) : '-'}</td>
+                <td className="px-6 py-4">
+                  {row.startedAt ? formatDate(row.startedAt) : '-'}
+                </td>
+                <td className="px-6 py-4">
+                  {row.endedAt ? formatDate(row.endedAt) : '-'}
+                </td>
               </tr>
             ))}
           </tbody>
