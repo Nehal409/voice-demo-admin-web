@@ -25,7 +25,7 @@ const OrderStatus = ({ status }) => {
     in_progress: 'text-yellow-500',
     completed: 'text-blue-500',
     none: 'text-red-500',
-    no_answer: 'text-orange-500',
+    'no-answer': 'text-orange-500',
     busy: 'text-orange-500',
   };
 
@@ -34,7 +34,7 @@ const OrderStatus = ({ status }) => {
     in_progress: 'In Progress',
     completed: 'Completed',
     none: 'Call Error',
-    no_answer: 'No Answer',
+    'no-answer': 'No Answer',
     busy: 'Busy',
   };
 

@@ -24,6 +24,11 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('house of zen')}
             label="House of Zen Calls"
           />
+          <TabButton
+            isActive={activeTab === 'legal'}
+            onClick={() => setActiveTab('legal')}
+            label="Legal Calls"
+          />
         </nav>
       </div>
 
@@ -31,6 +36,7 @@ export default function AdminDashboard() {
         {activeTab === 'hospital' && <CallsList type="hospital" />}
         {activeTab === 'restaurant' && <CallsList type="restaurant" />}
         {activeTab === 'house of zen' && <CallsList type="house of zen" />}
+        {activeTab === 'legal' && <CallsList type="legal" />}
       </div>
     </div>
   );
