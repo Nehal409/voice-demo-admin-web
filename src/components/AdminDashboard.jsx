@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import CallsList from './CallsList';
+import ChatBotAppointmentList from './ChatBotAppointmentList';
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState('hospital');
@@ -29,6 +30,11 @@ export default function AdminDashboard() {
             onClick={() => setActiveTab('legal')}
             label="Legal Calls"
           />
+          <TabButton
+            isActive={activeTab === 'chatbot'}
+            onClick={() => setActiveTab('chatbot')}
+            label="Chat Bot Appointments"
+          />
         </nav>
       </div>
 
@@ -37,6 +43,7 @@ export default function AdminDashboard() {
         {activeTab === 'restaurant' && <CallsList type="restaurant" />}
         {activeTab === 'house of zen' && <CallsList type="house of zen" />}
         {activeTab === 'legal' && <CallsList type="legal" />}
+        {activeTab === 'chatbot' && <ChatBotAppointmentList type="chatbot" />}
       </div>
     </div>
   );
